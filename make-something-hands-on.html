@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#6A1B1A">
+<title>Make Something · NotebookLM & Gemini · Learn with Dinesh Sir</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FFFBF0;--card:#FFFFFF;--maroon:#6A1B1A;--maroon-dark:#4E1312;
+  --mustard:#E8B53D;--mustard-soft:#F7E7BE;--ink:#2A211C;--ink-soft:#6E6259;--line:#E7DBC3;
+  --display:Georgia,'Times New Roman',serif;
+  --body:'Inter',system-ui,-apple-system,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  --nav:56px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:rgba(106,27,26,.12);min-width:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:var(--nav)}
+html,body{max-width:100%;overflow-x:hidden}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--body);
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased;padding-top:var(--nav)}
+img{max-width:100%;display:block}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;background:var(--cream);border-bottom:1px solid var(--line)}
+.nav .in{max-width:960px;margin:0 auto;height:var(--nav);display:flex;align-items:center;gap:12px;padding:0 16px}
+.mark{flex:0 0 auto;width:36px;height:36px;border-radius:50%;background:var(--maroon);color:var(--mustard);
+  display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:20px;box-shadow:0 0 0 2px var(--mustard)}
+.brand{flex:1 1 auto;min-width:0}
+.brand b{display:block;font-family:var(--display);font-size:15px;font-weight:700;color:var(--maroon);line-height:1.15}
+.brand small{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin-top:2px}
+.nav .tag{flex:0 0 auto;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--maroon);font-weight:700}
+
+.wrap{max-width:960px;margin:0 auto;background:var(--card);border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.sec{padding:38px 20px 34px;border-top:1px solid var(--line)}
+.sec:first-child{border-top:0}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(32px,8vw,54px);line-height:1.05;margin:0 0 14px;letter-spacing:-.02em;color:var(--maroon)}
+h1 span{color:var(--ink);display:block}
+h2{font-family:var(--display);font-weight:700;font-size:clamp(23px,5.6vw,34px);margin:0 0 8px;color:var(--maroon);letter-spacing:-.01em}
+.step-tag{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+.step-tag::after{content:"";flex:1 1 auto;height:2px;background:var(--mustard);max-width:120px}
+p{margin:0 0 14px}
+.lede{font-size:19px;color:var(--ink-soft);margin:0 0 18px;line-height:1.55}
+.punch{font-family:var(--display);font-size:clamp(20px,4.4vw,26px);line-height:1.34;font-weight:700;color:var(--maroon);border-left:4px solid var(--mustard);padding:6px 0 6px 18px;margin:20px 0}
+
+/* download row */
+.dl{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.dl a{flex:1 1 220px;display:flex;align-items:center;gap:12px;min-height:62px;padding:0 16px;background:var(--maroon);color:var(--cream);text-decoration:none;border-radius:4px}
+.dl a .ic{font-size:22px}
+.dl a b{display:block;font-size:14px;font-weight:600}
+.dl a small{display:block;font-size:11px;opacity:.82;letter-spacing:.04em}
+.dl a.alt{background:var(--card);color:var(--maroon);border:2px solid var(--maroon)}
+.dl a.wa{background:#1D7A44}
+.dl a:active{opacity:.86}
+
+/* numbered do-steps */
+.do{counter-reset:d;margin:14px 0}
+.di{position:relative;padding:4px 0 4px 42px;margin:0 0 12px;font-size:16px;line-height:1.5}
+.di::before{counter-increment:d;content:counter(d);position:absolute;left:0;top:2px;width:28px;height:28px;
+  border-radius:50%;background:var(--mustard-soft);color:var(--maroon);font-weight:700;font-size:14px;
+  display:flex;align-items:center;justify-content:center;font-family:var(--display)}
+.di code{font-family:var(--mono);font-size:13.5px;background:var(--cream);border:1px solid var(--line);border-radius:3px;padding:1px 6px;color:var(--maroon);font-weight:500}
+.di b{color:var(--maroon)}
+
+/* prompt card */
+.prompt{border:1px solid var(--line);border-top:4px solid var(--mustard);border-radius:5px;background:var(--card);margin:14px 0;overflow:hidden}
+.prompt-head{display:flex;align-items:center;gap:10px;padding:11px 13px;border-bottom:1px solid var(--line);background:var(--cream)}
+.prompt-head .t{flex:1 1 auto;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--maroon);font-weight:700;line-height:1.4}
+.copy{flex:0 0 auto;height:40px;min-width:84px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;background:var(--maroon);color:var(--cream);border:0;padding:0 14px;cursor:pointer;border-radius:3px;font-weight:600}
+.copy.done{background:#2E6B4F}
+pre{margin:0;padding:14px 13px;font-family:var(--mono);font-size:13px;line-height:1.72;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--ink)}
+.beauty{background:var(--mustard-soft);padding:2px 4px;border-radius:2px}
+
+/* tool banner */
+.toolband{display:flex;align-items:center;gap:14px;background:var(--maroon);color:var(--cream);border-radius:6px;padding:16px 18px;margin:16px 0}
+.toolband .badge{flex:0 0 auto;width:52px;height:52px;border-radius:12px;background:var(--mustard);color:var(--maroon);
+  display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:24px;font-weight:700}
+.toolband b{display:block;font-family:var(--display);font-size:20px;color:var(--cream)}
+.toolband small{display:block;font-size:13px;color:var(--mustard-soft);margin-top:2px;line-height:1.4}
+
+.challenge{border:2px solid var(--maroon);border-radius:6px;background:linear-gradient(180deg,#fff,#fffaf0);padding:18px;margin:18px 0}
+.challenge .k{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--maroon);font-weight:700;margin:0 0 8px}
+.challenge p{font-family:var(--display);font-size:18px;line-height:1.45;margin:0;color:var(--ink)}
+.challenge b{color:var(--maroon)}
+
+.callout{border-left:4px solid var(--mustard);background:var(--cream);padding:14px 16px;margin:20px 0;border-radius:0 4px 4px 0}
+.callout b{font-family:var(--display);color:var(--maroon)}
+.check{border-left:4px solid var(--maroon);background:#FBF1F0;padding:14px 16px;margin:18px 0;border-radius:0 4px 4px 0}
+.check b{font-family:var(--display);color:var(--maroon)}
+
+ul.plain{padding-left:20px;margin:0 0 14px}
+ul.plain li{margin-bottom:8px}
+
+.btn{display:inline-flex;align-items:center;min-height:54px;padding:0 24px;background:var(--maroon);color:var(--cream);text-decoration:none;border-radius:3px;font-size:12px;letter-spacing:.13em;text-transform:uppercase;font-weight:600}
+.btn:hover{background:var(--maroon-dark)}
+
+footer{background:var(--maroon);color:var(--mustard-soft);padding:32px 20px 40px;font-size:15px}
+footer .fmark{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+footer .fmark .mark{background:var(--mustard);color:var(--maroon);box-shadow:0 0 0 2px var(--maroon-dark)}
+footer strong{color:var(--cream);font-family:var(--display);font-size:19px;display:block}
+footer a{color:var(--mustard)}
+footer .fine{font-size:12px;opacity:.75;margin-top:16px}
+
+@media (min-width:760px){
+  :root{--nav:64px}
+  .sec{padding:50px 56px 46px}
+  body{font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.nav{position:static}body{padding-top:0}.copy{display:none}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="in">
+    <div class="mark" aria-hidden="true">द</div>
+    <div class="brand"><b>Learn with Dinesh Sir</b><small>AI for Educators</small></div>
+    <div class="tag">Hands-on</div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- INTRO -->
+  <section class="sec">
+    <p class="step-tag">Your turn · not a demo</p>
+    <h1>Now you<br><span>make something</span></h1>
+    <p class="lede">You have watched enough. In the next few minutes you will take one document and turn it into a podcast, a one-page poster and an animated storybook, with your own hands, on your own screen. Follow along at your own pace.</p>
+    <p class="punch">One file in. A podcast, a poster and a picture-book out. That is the whole trick.</p>
+  </section>
+
+  <!-- GET THE FILE -->
+  <section class="sec">
+    <p class="step-tag">First · get the document</p>
+    <h2>Grab the source pack</h2>
+    <p class="lede">Everyone works from the same file today: a short brief on teaching a generation that learns differently. Download it, or open the shared folder and save it to your device.</p>
+    <div class="dl">
+      <a href="https://drive.google.com/file/d/1hi3QliFSQ5fYUcGgAFKNRS5iYMUWKXoj/view?usp=drive_link" target="_blank" rel="noopener">
+        <span class="ic">↓</span>
+        <span><b>Open the source pack PDF</b><small>save this to your device, then upload it</small></span>
+      </a>
+      <a class="alt" href="https://drive.google.com/drive/folders/1Cy0ePJBHrxwmGXMX9Mf2oZ7cWbYW8KU-?usp=drive_link" target="_blank" rel="noopener">
+        <span class="ic">☁</span>
+        <span><b>Open the shared folder</b><small>everything from today lives here</small></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- NOTEBOOKLM -->
+  <section class="sec">
+    <div class="toolband">
+      <div class="badge" aria-hidden="true">N</div>
+      <div><b>NotebookLM</b><small>answers only from your document, and shows you where every answer came from</small></div>
+    </div>
+
+    <p class="step-tag">Step one · load it and question it</p>
+    <h2>Upload, then interrogate</h2>
+    <div class="do">
+      <p class="di">Open <code>notebooklm.google.com</code> and sign in. On an office account that blocks it, use a personal Gmail.</p>
+      <p class="di">Click <b>New notebook</b>, then <code>Add sources</code>, and upload the source pack PDF.</p>
+      <p class="di">In the chat, ask it: <em>what does this say about why students switch off in the first ten minutes?</em></p>
+      <p class="di"><b>Tap the little citation number</b> in its answer. Watch it jump to the exact line in the document. It cannot invent, because it only reads what you gave it.</p>
+    </div>
+
+    <p class="step-tag">Step two · the podcast</p>
+    <h2>Turn the document into a conversation</h2>
+    <div class="do">
+      <p class="di">In the <code>Studio</code> panel, tap <code>Audio Overview</code>.</p>
+      <p class="di">Before generating, tap <code>Customise</code> and paste the steer below.</p>
+      <p class="di">Generate it. It takes a few minutes, so start it and read on.</p>
+      <p class="di">When it plays, tap <code>Join</code> and <b>ask the hosts a question out loud</b>. They answer from your document, then carry on.</p>
+    </div>
+    <div class="prompt">
+      <div class="prompt-head"><span class="t">Paste into Customise · the podcast</span><button class="copy" type="button">Copy</button></div>
+<pre>Explain this to college faculty in simple, warm English.
+Focus on the practical shift: what teachers should actually
+do differently on Monday for students who learn this way.
+Use Indian classroom examples. Assume the listener is a busy
+lecturer who has not read the document. Keep it under 8
+minutes. Do not just summarise, have a real back-and-forth
+where one host pushes the other for specifics.</pre>
+    </div>
+    <div class="callout"><p style="margin:0"><b>Free accounts get three audio overviews a day.</b> If yours will not generate, you have used them up. Pair with a neighbour and share one.</p></div>
+
+    <p class="step-tag">Step three · your hands-on</p>
+    <h2>Make your own one-page poster</h2>
+    <div class="challenge">
+      <p class="k">The challenge</p>
+      <p>Same document, forty of you, and in seconds you will each have a <b>different</b> one-page poster. Make yours, screenshot it, drop it in the group. <b>First five in get a shout-out.</b></p>
+    </div>
+    <div class="do">
+      <p class="di">In <code>Studio</code>, tap <code>Infographic</code>.</p>
+      <p class="di">Paste the steer below. Notice the last two lines, they are what make it <span class="beauty">look good</span> instead of plain.</p>
+      <p class="di">Screenshot the result and share it. Print-ready for a staff-room wall.</p>
+    </div>
+    <div class="prompt">
+      <div class="prompt-head"><span class="t">Studio · Infographic · your poster</span><button class="copy" type="button">Copy</button></div>
+<pre>Make a one-page infographic from this document for college
+faculty. Title it clearly. Show at most six ideas, each with
+a short heading and one line. Focus on what teachers should
+actually do differently for students who learn this way.
+
+Make it visually appealing: a clear visual hierarchy, a small
+simple icon beside each of the six ideas, generous spacing,
+and one accent colour used consistently. Readable at a glance
+and still clean when printed in black and white.</pre>
+    </div>
+    <div class="callout"><p style="margin:0"><b>Taking too long, or came back plain?</b> Tap <code>Mind Map</code> instead. It is instant every time and still something you can hold up. The point is that you make something, not that everyone makes the identical thing.</p></div>
+  </section>
+
+  <!-- GEMINI -->
+  <section class="sec">
+    <div class="toolband">
+      <div class="badge" aria-hidden="true">G</div>
+      <div><b>Gemini</b><small>where the same idea becomes a decorated, illustrated image, and an animated storybook</small></div>
+    </div>
+
+    <p class="lede">NotebookLM gives you clean and accurate. Gemini gives you beautiful. Same idea, two tools, and knowing which does which is the real skill. This is called chaining: grounded content from one tool, rich visuals from another.</p>
+
+    <p class="step-tag">Step four · the decorated infographic</p>
+    <h2>The same poster, but illustrated</h2>
+    <div class="do">
+      <p class="di">Open <code>gemini.google.com</code>.</p>
+      <p class="di">In the tools menu, turn on <b>Create images</b> (Nano Banana). If you have it, choose the <b>Pro</b> or <b>Thinking</b> image model for the best text.</p>
+      <p class="di">Paste one of the six ideas from your NotebookLM poster, then paste the prompt below.</p>
+      <p class="di"><b>Check every word and figure</b> before you would ever use it with students. Image tools can spell wrong or get a fact wrong.</p>
+    </div>
+    <div class="prompt">
+      <div class="prompt-head"><span class="t">Gemini · decorated infographic</span><button class="copy" type="button">Copy</button></div>
+<pre>Create a visually rich, illustrated infographic for college
+teachers on how to teach a generation that learns differently.
+Show six ideas, each with a hand-drawn style icon, a short
+bold heading and one line of text. Warm, friendly, modern
+design. Use a maroon and mustard-gold colour scheme on a
+cream background. Clear layout, legible text, poster style,
+suitable to print and pin on a staff-room wall.</pre>
+    </div>
+
+    <p class="step-tag">Step five · the animated storybook</p>
+    <h2>Turn a concept into a picture-book</h2>
+    <div class="do">
+      <p class="di">Still in Gemini, start a new prompt.</p>
+      <p class="di">Paste the storybook prompt below.</p>
+      <p class="di">Gemini builds an illustrated storybook, page by page, that reads itself aloud. This is the one to make for younger students, or to explain a dry concept gently.</p>
+    </div>
+    <div class="prompt">
+      <div class="prompt-head"><span class="t">Gemini · animated storybook</span><button class="copy" type="button">Copy</button></div>
+<pre>Make an animated storybook that tells the story of one teacher
+who changes how they teach for a generation that learns
+differently. Give it a beginning, a struggle and a hopeful
+ending. One running character an Indian teacher would
+recognise. Warm children's-book illustration style, soft
+colours, one clear picture per page, gentle and human.</pre>
+    </div>
+    <div class="callout"><p style="margin:0"><b>Building a big concept?</b> Ask Gemini for a full illustrated explainer of any topic you teach, with diagrams and labelled pictures. The same tool that made the storybook will visualise an entire chapter as one decorated page.</p></div>
+  </section>
+
+  <!-- TUTOR + TAKE HOME -->
+  <section class="sec">
+    <p class="step-tag">Step six · give it to your students</p>
+    <h2>Turn your notebook into a tutor</h2>
+    <p class="lede">Back in NotebookLM, tap <code>Share</code> and send the notebook link to your class. It becomes a tutor they can question at eleven at night, that only ever answers from what you taught them. For most of us this is the one to use on Monday.</p>
+
+    <div class="check">
+      <b>Before any of this reaches a student</b>
+      <ul class="plain" style="margin-top:8px">
+        <li>Read it yourself. Verify every fact, figure and citation.</li>
+        <li>Never upload student records, personal data or confidential papers.</li>
+        <li>Tell students when work is AI-assisted, and ask them to do the same.</li>
+        <li>Your institution's policy comes before anything on this page.</li>
+      </ul>
+    </div>
+
+    <p class="punch">You just turned one file into five things. That used to be a week of work.</p>
+
+    <p class="step-tag" style="margin-top:26px">Last thing · send it in</p>
+    <h2>Drop what you built</h2>
+    <p class="lede">Put your poster, your storybook or a screenshot into the shared folder, then say hello. I look at every submission and I reply. The best ones go up with your name on them.</p>
+    <div class="dl">
+      <a href="https://drive.google.com/drive/folders/1nrq-HoY76PBfHTiT7_1ORrp4fpmIl2CB?usp=drive_link" target="_blank" rel="noopener">
+        <span class="ic">☁</span>
+        <span><b>Drop your work here</b><small>upload your poster, storybook or screenshot</small></span>
+      </a>
+      <a class="wa" href="https://wa.me/918553585580?text=Hi%20Dinesh%20Sir%2C%20here%20is%20what%20I%20built%20in%20your%20session." target="_blank" rel="noopener">
+        <span class="ic">✆</span>
+        <span><b>Message me on WhatsApp</b><small>+91 85535 85580</small></span>
+      </a>
+      <a class="alt" href="https://www.linkedin.com/in/dinesh-kumar-r-3ba42536/" target="_blank" rel="noopener">
+        <span class="ic">in</span>
+        <span><b>Connect on LinkedIn</b><small>let's stay in touch</small></span>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="fmark"><div class="mark" aria-hidden="true">द</div></div>
+    <strong>Leaders don't build followers. They build more leaders.</strong>
+    <p style="margin-top:10px">WhatsApp <a href="https://wa.me/918553585580">+91 85535 85580</a> · <a href="https://www.linkedin.com/in/dinesh-kumar-r-3ba42536/">LinkedIn</a></p>
+    <p class="fine">Tool behaviour verified July 2026. NotebookLM and Gemini both change often. If a button has moved, look for the nearest match, the steps still hold.</p>
+  </footer>
+</main>
+
+<script>
+(function(){
+  function fallbackCopy(t){
+    var ta=document.createElement('textarea'); ta.value=t; ta.setAttribute('readonly','');
+    ta.style.cssText='position:fixed;top:0;opacity:0'; document.body.appendChild(ta);
+    ta.select(); ta.setSelectionRange(0,ta.value.length);
+    var ok=false; try{ ok=document.execCommand('copy'); }catch(e){} document.body.removeChild(ta); return ok;
+  }
+  document.addEventListener('click', function(e){
+    var b=e.target.closest('.copy'); if(!b) return;
+    var t=b.closest('.prompt').querySelector('pre').innerText.replace(/\s+$/,'');
+    function done(){ b.textContent='Copied'; b.classList.add('done'); setTimeout(function(){ b.textContent='Copy'; b.classList.remove('done'); },1600); }
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).then(done).catch(function(){ if(fallbackCopy(t)) done(); });
+    } else { if(fallbackCopy(t)) done(); }
+  });
+})();
+</script>
+</body>
+</html>
